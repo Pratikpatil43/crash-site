@@ -4,31 +4,43 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-// Your regular server routes
+// Server route
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
 
-  // Stress test starts after server is up
-  const TARGET = "https://mentrawellness.vercel.app"; // target URL
-  const TOTAL_REQUESTS = 10000;
+  // Safe throttled stress test
+  const TARGET = "https://mentrawellness.vercel.app";
+  const TOTAL_REQUESTS = 50000;  // 50k requests
+  const BATCH_SIZE = 100;        // requests per batch
+  const INTERVAL_MS = 50;        // delay between batches
+
   let completed = 0;
+  let batchStart = 0;
 
-  console.log("Starting stress test...");
+  console.log("Starting throttled stress test for 50,000 requests...");
 
-  for (let i = 0; i < TOTAL_REQUESTS; i++) {
-    https.get(TARGET, (res) => {
-      completed++;
-      if (completed % 100 === 0) {
-        console.log(`Completed: ${completed}, Status: ${res.statusCode}`);
-      }
-    }).on("error", (err) => {
-      completed++;
-      console.log(`Error: ${err.message}`);
-    });
-  }
+  const interval = setInterval(() => {
+    for (let i = 0; i < BATCH_SIZE && batchStart + i < TOTAL_REQUESTS; i++) {
+      https.get(TARGET, (res) => {
+        completed++;
+        if (completed % 500 === 0) { // log every 500 requests
+          console.log(`Completed: ${completed}, Status: ${res.statusCode}`);
+        }
+      }).on("error", (err) => {
+        completed++;
+        console.log(`Error: ${err.message}`);
+      });
+    }
+
+    batchStart += BATCH_SIZE;
+
+    if (batchStart >= TOTAL_REQUESTS) {
+      clearInterval(interval);
+      console.log("Stress test finished!");
+    }
+  }, INTERVAL_MS);
 });
