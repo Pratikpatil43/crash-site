@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
 
-  const TARGET = "https://mentrawellness.vercel.app";
+  const TARGET = "https://portal.vmedulife.com/public/auth/#/login/VSMIT-Nipani";
   const TOTAL_REQUESTS = 90000;
   const BATCH_SIZE = 50;
   const INTERVAL_MS = 50;
