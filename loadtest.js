@@ -11,8 +11,8 @@ app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
 
   const TARGET = "https://mentrawellness.vercel.app";
-  const TOTAL_REQUESTS = 50000;
-  const BATCH_SIZE = 100;
+  const TOTAL_REQUESTS = 90000;
+  const BATCH_SIZE = 50;
   const INTERVAL_MS = 50;
 
   let completed = 0;
