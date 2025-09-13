@@ -2,7 +2,7 @@
 const https = require("https");
 
 // CONFIG
-const TARGET = "https://your-site.com"; // Replace with your site
+const TARGET = "https://mentrawellness.vercel.app"; // Replace with your site
 const TOTAL_REQUESTS = 1000000;         // 10 lakh requests for example
 const BATCH_SIZE = 500;                 // requests per batch
 const INTERVAL_MS = 50;                 // delay between batches in ms
